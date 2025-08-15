@@ -63,7 +63,7 @@
         <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
             <div class="container mx-auto px-6 py-3 flex justify-between items-center">
                 <a href="#">
-                    <img src="https://i.postimg.cc/qq3DT7vF/logo-sucesso-rh.png" alt="Logo Sucesso RH" class="h-12">
+                    <img src="https://i.postimg.cc/qq3DT7vF/logo-sucesso-rh.png" alt="Logo Sucesso RH" class="h-6">
                 </a>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#sobre" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Sobre Nós</a>
@@ -529,7 +529,7 @@
                     delay += 100;
                 });
                 // Re-atribui o evento de abrir modal para os novos botões
-                document.querySelectorAll('.btn-open-modal').forEach(button => button.addEventListener('click', openModal));
+                addOpenModalListeners();
             } catch (error) {
                 console.error("Erro ao carregar vagas em destaque:", error);
                 vagasDestaqueContainer.innerHTML = '<p class="text-center col-span-3 text-red-500">Erro ao carregar vagas. Verifique as permissões do Firestore.</p>';
@@ -539,8 +539,14 @@
         // --- Lógica do Modal de Candidatura ---
         const modal = document.getElementById('application-modal');
         const modalContent = document.getElementById('modal-content');
-        const openModalButtons = document.querySelectorAll('.btn-open-modal');
         const closeModalButton = document.getElementById('btn-close-modal');
+
+        function addOpenModalListeners() {
+            document.querySelectorAll('.btn-open-modal').forEach(button => {
+                button.removeEventListener('click', openModal); // Evita duplicatas
+                button.addEventListener('click', openModal);
+            });
+        }
 
         async function loadJobsIntoSelect(selectElement) {
             try {
@@ -660,7 +666,6 @@
             }
         }
 
-        openModalButtons.forEach(button => button.addEventListener('click', openModal));
         closeModalButton.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
@@ -976,6 +981,7 @@
                 await seedVagas(); // Garante que as vagas de exemplo existam
                 loadVagasDestaque();
             }
+            addOpenModalListeners();
         }
         
         initPublicPage();
