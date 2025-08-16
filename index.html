@@ -305,6 +305,22 @@
                            <input type="text" id="filter-name" placeholder="Digite um nome..." class="w-full p-2 border rounded-md text-sm">
                         </div>
                         <div>
+                           <label for="filter-bairro" class="block font-semibold mb-1 text-sm">Filtrar por Bairro</label>
+                           <input type="text" id="filter-bairro" placeholder="Digite um bairro..." class="w-full p-2 border rounded-md text-sm">
+                        </div>
+                        <div>
+                            <label for="filter-zona" class="block font-semibold mb-1 text-sm">Zona da Cidade</label>
+                            <select id="filter-zona" class="w-full p-2 border rounded-md text-sm bg-white">
+                                <option value="">Todas</option>
+                                <option value="Norte">Norte</option>
+                                <option value="Sul">Sul</option>
+                                <option value="Leste">Leste</option>
+                                <option value="Oeste">Oeste</option>
+                                <option value="Centro-Sul">Centro-Sul</option>
+                                <option value="Centro-Oeste">Centro-Oeste</option>
+                            </select>
+                        </div>
+                        <div>
                             <label for="filter-escolaridade" class="block font-semibold mb-1 text-sm">Nível de Escolaridade</label>
                             <select id="filter-escolaridade" class="w-full p-2 border rounded-md text-sm bg-white">
                                 <option value="">Todos</option>
@@ -331,19 +347,7 @@
                                 <option value="Não">Não</option>
                             </select>
                         </div>
-                        <div>
-                            <label for="filter-zona" class="block font-semibold mb-1 text-sm">Zona da Cidade</label>
-                            <select id="filter-zona" class="w-full p-2 border rounded-md text-sm bg-white">
-                                <option value="">Todas</option>
-                                <option value="Norte">Norte</option>
-                                <option value="Sul">Sul</option>
-                                <option value="Leste">Leste</option>
-                                <option value="Oeste">Oeste</option>
-                                <option value="Centro-Sul">Centro-Sul</option>
-                                <option value="Centro-Oeste">Centro-Oeste</option>
-                            </select>
-                        </div>
-                        <div class="flex space-x-2 mt-4 col-span-full md:col-span-2">
+                        <div class="flex space-x-2 mt-4 col-span-full md:col-span-1">
                              <button id="apply-filters" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">Aplicar</button>
                              <button id="clear-filters" class="bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-lg hover:bg-slate-300">Limpar</button>
                         </div>
@@ -356,8 +360,8 @@
                                 <tr>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Nome</th>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Vaga Aplicada</th>
+                                    <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Bairro</th>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Zona</th>
-                                    <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Empregado?</th>
                                     <th class="py-3 px-4 text-center text-sm font-bold text-slate-600 uppercase">Data</th>
                                     <th class="py-3 px-4 text-center text-sm font-bold text-slate-600 uppercase">Ações</th>
                                 </tr>
@@ -755,11 +759,11 @@
 
         let allCandidaturas = [];
 
-        function initDashboard() {
+        async function initDashboard() {
             populateFuncoesDataList();
             loadVagasAdmin();
-            loadCandidaturasAdmin();
-            loadVagasIntoFilter();
+            await loadCandidaturasAdmin(); // Espera candidaturas carregarem primeiro
+            loadVagasIntoFilter(); // Depois popula o filtro com base nelas
         }
 
         const vagaForm = document.getElementById('vaga-form');
@@ -846,20 +850,22 @@
         const tableBody = document.getElementById('candidatos-table-body');
         const filterVagaSelect = document.getElementById('filter-vaga');
         const filterNameInput = document.getElementById('filter-name');
+        const filterBairroInput = document.getElementById('filter-bairro');
         const filterEscolaridadeSelect = document.getElementById('filter-escolaridade');
         const filterEmpregadoSelect = document.getElementById('filter-empregado');
         const filterFilhosSelect = document.getElementById('filter-filhos');
         const filterZonaSelect = document.getElementById('filter-zona');
 
-        async function loadVagasIntoFilter() {
+        function loadVagasIntoFilter() {
             try {
-                const q = query(collection(db, 'vagas'), orderBy("titulo"));
-                const vagasSnapshot = await getDocs(q);
+                const appliedVagas = [...new Set(allCandidaturas.map(c => c.vagaNome))];
+                appliedVagas.sort();
+
                 filterVagaSelect.innerHTML = '<option value="">Todas as Vagas</option>';
-                vagasSnapshot.forEach(doc => {
+                appliedVagas.forEach(vagaNome => {
                     const option = document.createElement('option');
-                    option.value = doc.data().titulo;
-                    option.textContent = doc.data().titulo;
+                    option.value = vagaNome;
+                    option.textContent = vagaNome;
                     filterVagaSelect.appendChild(option);
                 });
             } catch (error) { console.error("Erro ao carregar vagas no filtro: ", error); }
@@ -892,8 +898,8 @@
                     <tr class="border-b border-slate-200 hover:bg-slate-50">
                         <td class="py-3 px-4 text-left whitespace-nowrap">${data.nome}</td>
                         <td class="py-3 px-4 text-left">${data.vagaNome}</td>
+                        <td class="py-3 px-4 text-left">${data.bairro || 'N/A'}</td>
                         <td class="py-3 px-4 text-left">${data.zonaCidade || 'N/A'}</td>
-                        <td class="py-3 px-4 text-left">${data.empregado || 'N/A'}</td>
                         <td class="py-3 px-4 text-center">${new Date(data.dataEnvio.seconds * 1000).toLocaleDateString()}</td>
                         <td class="py-3 px-4 text-center">
                             <button class="view-details-btn text-blue-500 hover:underline" data-id="${data.id}">Ver Detalhes</button>
@@ -962,6 +968,7 @@
         document.getElementById('apply-filters').addEventListener('click', () => {
             const vagaNome = filterVagaSelect.value;
             const name = filterNameInput.value.toLowerCase();
+            const bairro = filterBairroInput.value.toLowerCase();
             const escolaridade = filterEscolaridadeSelect.value;
             const empregado = filterEmpregadoSelect.value;
             const filhos = filterFilhosSelect.value;
@@ -971,6 +978,7 @@
 
             if (vagaNome) { filtered = filtered.filter(c => c.vagaNome === vagaNome); }
             if (name) { filtered = filtered.filter(c => c.nome.toLowerCase().includes(name)); }
+            if (bairro) { filtered = filtered.filter(c => c.bairro && c.bairro.toLowerCase().includes(bairro)); }
             if (escolaridade) { filtered = filtered.filter(c => c.escolaridade === escolaridade); }
             if (empregado) { filtered = filtered.filter(c => c.empregado === empregado); }
             if (filhos) { filtered = filtered.filter(c => c.possuiFilhos === filhos); }
@@ -982,6 +990,7 @@
         document.getElementById('clear-filters').addEventListener('click', () => {
             filterVagaSelect.value = '';
             filterNameInput.value = '';
+            filterBairroInput.value = '';
             filterEscolaridadeSelect.value = '';
             filterEmpregadoSelect.value = '';
             filterFilhosSelect.value = '';
