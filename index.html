@@ -65,12 +65,12 @@
                 <a href="#">
                     <img src="https://i.postimg.cc/qq3DT7vF/logo-sucesso-rh.png" alt="Logo Sucesso RH" class="h-6">
                 </a>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#sobre" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Sobre Nós</a>
-                    <a href="#vagas" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Vagas</a>
-                    <a href="#dicas" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Dicas</a>
-                </nav>
-                <div class="flex items-center">
+                <div class="flex items-center space-x-8">
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="#sobre" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Sobre Nós</a>
+                        <a href="#vagas" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Vagas</a>
+                        <a href="#dicas" class="text-slate-600 hover:text-blue-500 transition-colors font-medium">Dicas</a>
+                    </nav>
                     <button id="admin-login-button" title="Acesso RH" class="p-2 rounded-full hover:bg-slate-100 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-500 hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -82,9 +82,10 @@
 
         <main>
             <!-- Hero Section -->
-            <section id="inicio" class="min-h-screen flex items-center justify-center pt-20 gradient-bg text-white relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-full bg-black/10"></div>
-                <div class="container mx-auto px-6 text-center z-10" data-aos="fade-up">
+            <section id="inicio" class="min-h-screen flex items-center justify-center pt-20 text-white relative overflow-hidden">
+                <img src="https://i.postimg.cc/Mpkzkcdy/closeup-shot-business-handshake-cropped-shot-two-people-wearing-formal-suits-shaking-hands-business.jpg" class="absolute inset-0 w-full h-full object-cover z-0" alt="Aperto de mãos de negócios">
+                <div class="absolute inset-0 w-full h-full bg-blue-600/70 z-10"></div>
+                <div class="container mx-auto px-6 text-center z-20" data-aos="fade-up">
                     <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Conquiste a vaga dos seus sonhos.</h1>
                     <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-blue-100">Nós conectamos talentos excepcionais às melhores oportunidades do mercado. Seu próximo passo na carreira começa aqui.</p>
                     <button class="btn-open-modal bg-white text-blue-600 font-bold py-4 px-10 rounded-full hover:bg-slate-100 transition-transform transform hover:scale-105 shadow-2xl">
@@ -322,7 +323,27 @@
                                 <option value="Não">Desempregado</option>
                             </select>
                         </div>
-                        <div class="flex space-x-2 mt-4">
+                        <div>
+                            <label for="filter-filhos" class="block font-semibold mb-1 text-sm">Possui Filhos?</label>
+                            <select id="filter-filhos" class="w-full p-2 border rounded-md text-sm bg-white">
+                                <option value="">Ambos</option>
+                                <option value="Sim">Sim</option>
+                                <option value="Não">Não</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="filter-zona" class="block font-semibold mb-1 text-sm">Zona da Cidade</label>
+                            <select id="filter-zona" class="w-full p-2 border rounded-md text-sm bg-white">
+                                <option value="">Todas</option>
+                                <option value="Norte">Norte</option>
+                                <option value="Sul">Sul</option>
+                                <option value="Leste">Leste</option>
+                                <option value="Oeste">Oeste</option>
+                                <option value="Centro-Sul">Centro-Sul</option>
+                                <option value="Centro-Oeste">Centro-Oeste</option>
+                            </select>
+                        </div>
+                        <div class="flex space-x-2 mt-4 col-span-full md:col-span-2">
                              <button id="apply-filters" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">Aplicar</button>
                              <button id="clear-filters" class="bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-lg hover:bg-slate-300">Limpar</button>
                         </div>
@@ -335,7 +356,7 @@
                                 <tr>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Nome</th>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Vaga Aplicada</th>
-                                    <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Escolaridade</th>
+                                    <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Zona</th>
                                     <th class="py-3 px-4 text-left text-sm font-bold text-slate-600 uppercase">Empregado?</th>
                                     <th class="py-3 px-4 text-center text-sm font-bold text-slate-600 uppercase">Data</th>
                                     <th class="py-3 px-4 text-center text-sm font-bold text-slate-600 uppercase">Ações</th>
@@ -480,25 +501,42 @@
         // =================================================================
         AOS.init({ once: true, duration: 800 });
 
+        const todasAsFuncoes = ["Acessor Comercial", "Agente de Portaria", "Ajudante de Carga e Descarga", "Ajudante de Motorista", "Alimentador", "Almoxarife", "Analista da Qualidade", "Analista de Compras", "Analista de Engenharia", "Analista de IMPEX", "Analista de PCM", "Analista de PCP", "Analista de Processo", "Analista de R&S", "Analista de RH", "Analista de RH Generalista", "Analista de Suprimentos", "Analista de TI", "Analista DP", "Analista Financeiro", "Analista Jurídico", "Analista Logística", "Analista Operacional", "Analista Patrimonial", "Analista Tributário", "Aprendiz Administrativo", "Aprendiz de Produção", "Aprendiz Logística", "Assistente Administrativo", "Assistente Comercial", "Assistente de Compras", "Assistente de Engenharia", "Assistente de Logística", "Assistente de P&D", "Assistente de PCP", "Assistente de Processos", "Assistente de Produção", "Assistente de RH", "Assistente de Suprimentos", "Assistente Financeiro", "Assistente Jurídico", "Assistente Operacional", "Assistente Patrimonial", "Assistente Tributário", "Auxiliar Administrativo", "Auxiliar de Almoxarifado", "Auxiliar de Compras", "Auxiliar de Engenharia", "Auxiliar de Escritório", "Auxiliar de Expedição", "Auxiliar de Limpeza", "Auxiliar de Logística", "Auxiliar de Produção", "Auxiliar de RH", "Auxiliar de Serviços Gerais", "Auxiliar Financeiro", "Auxiliar Operacional", "Auxiliar Patrimonial", "Auxiliar Tributário", "Coordenador Administrativo", "Coordenador Comercial", "Coordenador de Compras", "Coordenador de Engenharia", "Coordenador de Logística", "Coordenador de Produção", "Coordenador de RH", "Coordenador de Suprimentos", "Coordenador Financeiro", "Coordenador Jurídico", "Coordenador Operacional", "Coordenador Patrimonial", "Coordenador Tributário", "Encarregado Administrativo", "Encarregado Comercial", "Encarregado de Compras", "Encarregado de Engenharia", "Encarregado de Logística", "Encarregado de Produção", "Encarregado de RH", "Encarregado de Suprimentos", "Encarregado Financeiro", "Encarregado Jurídico", "Encarregado Operacional", "Encarregado Patrimonial", "Encarregado Tributário", "Gerente Administrativo", "Gerente Comercial", "Gerente de Compras", "Gerente de Engenharia", "Gerente de Logística", "Gerente de Produção", "Gerente de RH", "Gerente de Suprimentos", "Gerente Financeiro", "Gerente Jurídico", "Gerente Operacional", "Gerente Patrimonial", "Gerente Tributário", "Zelador"];
+
         // --- Lógica do Carrossel de Dicas ---
         const track = document.getElementById('tips-track');
         const slides = Array.from(track.children);
         const nextButton = document.getElementById('next-tip');
         const prevButton = document.getElementById('prev-tip');
         let currentIndex = 0;
+        let carouselInterval;
 
         const setSlidePosition = () => {
             track.style.transform = 'translateX(-' + 100 * currentIndex + '%)';
         }
 
+        const startCarousel = () => {
+            carouselInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                setSlidePosition();
+            }, 5000); // Roda a cada 5 segundos
+        }
+
+        const resetCarousel = () => {
+            clearInterval(carouselInterval);
+            startCarousel();
+        }
+
         nextButton.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % slides.length;
             setSlidePosition();
+            resetCarousel();
         });
 
         prevButton.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + slides.length) % slides.length;
             setSlidePosition();
+            resetCarousel();
         });
         
         // --- Lógica das Vagas em Destaque ---
@@ -548,22 +586,14 @@
             });
         }
 
-        async function loadJobsIntoSelect(selectElement) {
-            try {
-                selectElement.innerHTML = '<option value="">Carregando vagas...</option>';
-                const q = query(collection(db, 'vagas'), orderBy("titulo"));
-                const vagasSnapshot = await getDocs(q);
-                selectElement.innerHTML = '<option value="">Selecione uma vaga</option>';
-                vagasSnapshot.forEach(doc => {
-                    const option = document.createElement('option');
-                    option.value = doc.id;
-                    option.textContent = doc.data().titulo;
-                    selectElement.appendChild(option);
-                });
-            } catch (error) {
-                console.error("Erro ao carregar vagas: ", error);
-                selectElement.innerHTML = '<option value="">Erro ao carregar vagas</option>';
-            }
+        function loadJobsIntoSelect(selectElement) {
+            selectElement.innerHTML = '<option value="">Selecione uma vaga</option>';
+            todasAsFuncoes.forEach(funcao => {
+                const option = document.createElement('option');
+                option.value = funcao;
+                option.textContent = funcao;
+                selectElement.appendChild(option);
+            });
         }
 
         const openModal = async () => {
@@ -578,12 +608,25 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                             <div class="md:col-span-2"><label for="nome" class="block text-sm font-medium text-slate-700">Nome Completo*</label><input type="text" id="nome" name="nome" required class="mt-1 w-full p-2 border rounded"></div>
                             <div><label for="dataNascimento" class="block text-sm font-medium text-slate-700">Data de Nascimento*</label><input type="date" id="dataNascimento" name="dataNascimento" required class="mt-1 w-full p-2 border rounded"></div>
-                            <div><label for="telefone" class="block text-sm font-medium text-slate-700">Telefone*</label><input type="tel" id="telefone" name="telefone" required class="mt-1 w-full p-2 border rounded"></div>
+                            <div><label for="telefone" class="block text-sm font-medium text-slate-700">Telefone - WhatsApp*</label><input type="tel" id="telefone" name="telefone" required class="mt-1 w-full p-2 border rounded"></div>
                             <div class="md:col-span-2"><label for="email" class="block text-sm font-medium text-slate-700">E-mail*</label><input type="email" id="email" name="email" required class="mt-1 w-full p-2 border rounded"></div>
                             <div><label class="block text-sm font-medium text-slate-700">Gênero</label><select name="genero" class="mt-1 w-full p-2 border rounded bg-white"><option value="">Selecione</option><option>Masculino</option><option>Feminino</option><option>Prefiro não informar</option></select></div>
                             <div><label class="block text-sm font-medium text-slate-700">Estado Civil</label><select name="estadoCivil" class="mt-1 w-full p-2 border rounded bg-white"><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)/União estável</option><option>Divorciado(a)</option><option>Viúvo(a)</option></select></div>
-                            <div><label class="block text-sm font-medium text-slate-700">Possui Filhos?</label><select name="possuiFilhos" class="mt-1 w-full p-2 border rounded bg-white"><option value="">Selecione</option><option>Não</option><option>Sim</option></select></div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700">Possui Filhos?</label>
+                                <select name="possuiFilhos" id="possuiFilhosSelect" class="mt-1 w-full p-2 border rounded bg-white">
+                                    <option value="">Selecione</option>
+                                    <option value="Não">Não</option>
+                                    <option value="Sim">Sim</option>
+                                </select>
+                            </div>
+                            <div id="quantosFilhosContainer" class="hidden">
+                                <label for="quantosFilhos" class="block text-sm font-medium text-slate-700">Se sim, quantos?</label>
+                                <input type="number" id="quantosFilhos" name="quantosFilhos" class="mt-1 w-full p-2 border rounded">
+                            </div>
                             <div><label for="cnh" class="block text-sm font-medium text-slate-700">CNH (Categoria, se houver)</label><input type="text" id="cnh" name="cnh" class="mt-1 w-full p-2 border rounded"></div>
+                            <div class="md:col-span-2"><label for="bairro" class="block text-sm font-medium text-slate-700">Bairro*</label><input type="text" id="bairro" name="bairro" required class="mt-1 w-full p-2 border rounded"></div>
+                            <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Onde você mora?*</label><select name="zonaCidade" required class="mt-1 w-full p-2 border rounded bg-white"><option value="">Selecione a Zona</option><option>Norte</option><option>Sul</option><option>Leste</option><option>Oeste</option><option>Centro-Sul</option><option>Centro-Oeste</option></select></div>
                         </div>
                     </fieldset>
                     <fieldset class="border p-4 rounded-md">
@@ -608,7 +651,17 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
-            await loadJobsIntoSelect(document.getElementById('vaga'));
+            loadJobsIntoSelect(document.getElementById('vaga'));
+            
+            document.getElementById('possuiFilhosSelect').addEventListener('change', (e) => {
+                const quantosFilhosContainer = document.getElementById('quantosFilhosContainer');
+                if (e.target.value === 'Sim') {
+                    quantosFilhosContainer.classList.remove('hidden');
+                } else {
+                    quantosFilhosContainer.classList.add('hidden');
+                }
+            });
+
             document.getElementById('application-form').addEventListener('submit', handleFormSubmit);
         };
 
@@ -629,8 +682,7 @@
 
             try {
                 const applicationData = {
-                    vagaId: formData.get('vaga'),
-                    vagaNome: form.querySelector('#vaga option:checked').textContent,
+                    vagaNome: formData.get('vaga'),
                     nome: formData.get('nome'),
                     dataNascimento: formData.get('dataNascimento'),
                     telefone: formData.get('telefone'),
@@ -638,7 +690,10 @@
                     genero: formData.get('genero'),
                     estadoCivil: formData.get('estadoCivil'),
                     possuiFilhos: formData.get('possuiFilhos'),
+                    quantosFilhos: formData.get('quantosFilhos') || '',
                     cnh: formData.get('cnh'),
+                    bairro: formData.get('bairro'),
+                    zonaCidade: formData.get('zonaCidade'),
                     escolaridade: formData.get('escolaridade'),
                     empregado: formData.get('empregado'),
                     pretensaoSalarial: formData.get('pretensaoSalarial'),
@@ -715,10 +770,9 @@
         const cancelEditBtn = document.getElementById('cancel-edit-button');
 
         function populateFuncoesDataList() {
-            const funcoes = ["Acessor comercial", "Agente de Portaria", "Ajudante de carga e descarga", "Ajudante de motorista", "Alimentador", "Almoxarife", "Analista da Qualiadade", "Analista de Compras", "Analista de Engenharia", "Analista de IMPEX", "Analista de PCM", "Analista de PCP", "Analista de Processo", "Analista de R&S", "Analista de RH", "Analista de RH Generalista", "Analista de Suprimentos", "Analista de TI", "Analista DP", "Analista Financeiro", "Analista Fiscal", "Analista S.G.I", "Apontador", "Artificie", "Assistente Administrativo", "Assistente de PCM", "Assistente de PCP", "Assistente de RH", "Assistente Financeiro", "Assistente Técnico de Laboratório", "Assitente de DP", "Auxiliar de ambulatório", "Auxiliar de cozinha", "Auxiliar de Ferramentaria", "Auxiliar de Produção", "Auxiliar de Serviços Gerais", "Business Partner de RH", "Comprador", "Contador", "Coordenador de Logistica", "Coordenador de manutenção", "Coordenador de Materiais", "Coordenador de PCM", "Coordenador de PCP", "Coordenador de Produção", "Coordenador de RH", "Cozinheiro", "Desenvolvedor", "Diretor de RH", "Diretor Industrial", "Empacotador", "Enfermeira", "Engenheiro de Processo", "Estoquista", "Ferramenteiro", "Fiscal de Patrimonio", "Gerente Administrativo", "Gerente de Operações", "Gerente de RH", "Gerente de Suprimentos", "Gerente Financeiro", "Inspetor de Qualidade", "Jardineiro", "Líde de forno", "Lídeer de C.Q", "Líder de Produção", "Líder de logística", "Líder de Manutenção", "Líder de Materiais", "Líder de serviços gerais", "Líder de usinagem", "Médico", "Mecânico de Manutenção", "Montador", "Motorista", "Motorista de Onibus", "Operador de Empilhadeira", "Operador de Guilhotina", "Operador de Injetora", "Operador de Maquinas", "Operador de Prensa", "Operador de Produção", "Pintor", "Pizzaiolo", "Porteiro", "Psicologo", "Recepcionista", "Repositor", "Supervisor de Logistica", "Supervisor de Manutenção", "Supervisor de Produção", "Supervisor de Qualidade", "Técnico de celular", "Técnico de Edificações", "Técnico de Enfermagem", "Técnico de Impressora", "Técnico de Manutenção", "Técnico de Refrigeração", "Técnico de Segurança do Trabalho", "Técnico em Eletrônica", "Técnico em Mecatrônica", "Técnico em Quimica", "Torneiro Mecânico", "Vendedor", "Vigia"];
             const datalist = document.getElementById('funcoes-list');
             datalist.innerHTML = '';
-            funcoes.forEach(funcao => {
+            todasAsFuncoes.forEach(funcao => {
                 const option = document.createElement('option');
                 option.value = funcao;
                 datalist.appendChild(option);
@@ -794,6 +848,8 @@
         const filterNameInput = document.getElementById('filter-name');
         const filterEscolaridadeSelect = document.getElementById('filter-escolaridade');
         const filterEmpregadoSelect = document.getElementById('filter-empregado');
+        const filterFilhosSelect = document.getElementById('filter-filhos');
+        const filterZonaSelect = document.getElementById('filter-zona');
 
         async function loadVagasIntoFilter() {
             try {
@@ -802,7 +858,7 @@
                 filterVagaSelect.innerHTML = '<option value="">Todas as Vagas</option>';
                 vagasSnapshot.forEach(doc => {
                     const option = document.createElement('option');
-                    option.value = doc.id;
+                    option.value = doc.data().titulo;
                     option.textContent = doc.data().titulo;
                     filterVagaSelect.appendChild(option);
                 });
@@ -810,7 +866,7 @@
         }
 
         async function loadCandidaturasAdmin() {
-            tableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">Carregando...</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center p-4">Carregando...</td></tr>';
             const q = query(collection(db, 'candidaturas'), orderBy("dataEnvio", "desc"));
             const querySnapshot = await getDocs(q);
             allCandidaturas = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -828,7 +884,7 @@
         function renderCandidaturas(candidaturas) {
             tableBody.innerHTML = '';
             if (candidaturas.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">Nenhum candidato encontrado.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center p-4">Nenhum candidato encontrado.</td></tr>';
                 return;
             }
             candidaturas.forEach(data => {
@@ -836,7 +892,7 @@
                     <tr class="border-b border-slate-200 hover:bg-slate-50">
                         <td class="py-3 px-4 text-left whitespace-nowrap">${data.nome}</td>
                         <td class="py-3 px-4 text-left">${data.vagaNome}</td>
-                        <td class="py-3 px-4 text-left">${escolaridadeMap[data.escolaridade] || 'N/A'}</td>
+                        <td class="py-3 px-4 text-left">${data.zonaCidade || 'N/A'}</td>
                         <td class="py-3 px-4 text-left">${data.empregado || 'N/A'}</td>
                         <td class="py-3 px-4 text-center">${new Date(data.dataEnvio.seconds * 1000).toLocaleDateString()}</td>
                         <td class="py-3 px-4 text-center">
@@ -873,7 +929,10 @@
                     <div><strong class="font-semibold text-slate-800">Gênero:</strong> ${data.genero || 'Não informado'}</div>
                     <div><strong class="font-semibold text-slate-800">Estado Civil:</strong> ${data.estadoCivil || 'Não informado'}</div>
                     <div><strong class="font-semibold text-slate-800">Possui Filhos?:</strong> ${data.possuiFilhos || 'Não informado'}</div>
+                    ${data.possuiFilhos === 'Sim' ? `<div><strong class="font-semibold text-slate-800">Quantidade de Filhos:</strong> ${data.quantosFilhos || 'Não informado'}</div>` : ''}
                     <div><strong class="font-semibold text-slate-800">CNH:</strong> ${data.cnh || 'Não informado'}</div>
+                    <div><strong class="font-semibold text-slate-800">Bairro:</strong> ${data.bairro || 'Não informado'}</div>
+                    <div><strong class="font-semibold text-slate-800">Zona da Cidade:</strong> ${data.zonaCidade || 'Não informado'}</div>
                     <hr>
                     <div><strong class="font-semibold text-slate-800">Escolaridade:</strong> ${escolaridadeMap[data.escolaridade] || 'Não informado'}</div>
                     <hr>
@@ -901,17 +960,21 @@
 
 
         document.getElementById('apply-filters').addEventListener('click', () => {
-            const vagaId = filterVagaSelect.value;
+            const vagaNome = filterVagaSelect.value;
             const name = filterNameInput.value.toLowerCase();
             const escolaridade = filterEscolaridadeSelect.value;
             const empregado = filterEmpregadoSelect.value;
+            const filhos = filterFilhosSelect.value;
+            const zona = filterZonaSelect.value;
             
             let filtered = allCandidaturas;
 
-            if (vagaId) { filtered = filtered.filter(c => c.vagaId === vagaId); }
+            if (vagaNome) { filtered = filtered.filter(c => c.vagaNome === vagaNome); }
             if (name) { filtered = filtered.filter(c => c.nome.toLowerCase().includes(name)); }
             if (escolaridade) { filtered = filtered.filter(c => c.escolaridade === escolaridade); }
             if (empregado) { filtered = filtered.filter(c => c.empregado === empregado); }
+            if (filhos) { filtered = filtered.filter(c => c.possuiFilhos === filhos); }
+            if (zona) { filtered = filtered.filter(c => c.zonaCidade === zona); }
             
             renderCandidaturas(filtered);
         });
@@ -921,6 +984,8 @@
             filterNameInput.value = '';
             filterEscolaridadeSelect.value = '';
             filterEmpregadoSelect.value = '';
+            filterFilhosSelect.value = '';
+            filterZonaSelect.value = '';
             renderCandidaturas(allCandidaturas);
         });
 
@@ -959,15 +1024,13 @@
             const snapshot = await getDocs(q);
             
             if (snapshot.empty) {
-                console.log("Banco de dados de vagas vazio. Adicionando vagas de exemplo.");
-                const sampleVagas = [
-                    { titulo: "Desenvolvedor Frontend Pleno", descricao: "Experiência em React e Tailwind para criar interfaces incríveis e responsivas.", createdAt: Timestamp.now() },
-                    { titulo: "Analista de Marketing Digital", descricao: "Profissional criativo para gerenciar campanhas de SEO, SEM e mídias sociais.", createdAt: Timestamp.now() },
-                    { titulo: "Gerente de Projetos (Scrum)", descricao: "Liderar equipes de desenvolvimento ágil, garantindo a entrega de projetos com qualidade.", createdAt: Timestamp.now() }
-                ];
-
-                for (const vaga of sampleVagas) {
-                    await addDoc(vagasRef, vaga);
+                console.log("Banco de dados de vagas vazio. Adicionando lista completa de vagas.");
+                for (const vaga of todasAsFuncoes) {
+                    await addDoc(vagasRef, { 
+                        titulo: vaga, 
+                        descricao: "Detalhes da vaga a serem preenchidos pelo administrador.", 
+                        createdAt: Timestamp.now() 
+                    });
                 }
             }
         }
@@ -982,6 +1045,7 @@
                 loadVagasDestaque();
             }
             addOpenModalListeners();
+            startCarousel();
         }
         
         initPublicPage();
