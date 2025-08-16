@@ -819,19 +819,17 @@
                     <!-- 2. Disponibilidade -->
                     <fieldset class="border p-4 rounded-md">
                         <legend class="font-semibold px-2 text-lg text-slate-800">2. Disponibilidade</legend>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                             <div><label for="disponibilidade" class="block text-sm font-medium text-slate-700">Disponibilidade de horário</label><input type="text" id="disponibilidade" name="disponibilidade" class="mt-1 w-full p-2 border rounded"></div>
-                            <div>
-                                <label for="restricaoHorario" class="block text-sm font-medium text-slate-700">Possui Restrição de horário?</label>
-                                <select name="restricaoHorario" id="restricaoHorarioSelect" class="mt-1 w-full p-2 border rounded bg-white">
-                                    <option value="Não">Não</option>
-                                    <option value="Sim">Sim</option>
+                        <div class="mt-2">
+                             <div>
+                                <label for="disponibilidade" class="block text-sm font-medium text-slate-700">Disponibilidade de horário</label>
+                                <select name="disponibilidade" id="disponibilidade" class="mt-1 w-full p-2 border rounded bg-white">
+                                    <option value="">Selecione</option>
+                                    <option>Manhã</option>
+                                    <option>Tarde</option>
+                                    <option>Noite</option>
+                                    <option>Todos os horários</option>
                                 </select>
-                            </div>
-                            <div id="qualRestricaoContainer" class="md:col-span-2 hidden">
-                                <label for="qualRestricao" class="block text-sm font-medium text-slate-700">Qual(is) a(s) restrição(ões)?</label>
-                                <textarea id="qualRestricao" name="qualRestricao" class="mt-1 w-full p-2 border rounded" rows="2"></textarea>
-                            </div>
+                             </div>
                         </div>
                     </fieldset>
 
@@ -974,16 +972,6 @@
                 }
             });
 
-            const restricaoHorarioSelect = document.getElementById('restricaoHorarioSelect');
-            const qualRestricaoContainer = document.getElementById('qualRestricaoContainer');
-            restricaoHorarioSelect.addEventListener('change', (e) => {
-                if (e.target.value === 'Sim') {
-                    qualRestricaoContainer.classList.remove('hidden');
-                } else {
-                    qualRestricaoContainer.classList.add('hidden');
-                }
-            });
-
             const comoSoubeSelect = document.getElementById('comoSoubeSelect');
             const outrosMeiosContainer = document.getElementById('outrosMeiosContainer');
             comoSoubeSelect.addEventListener('change', (e) => {
@@ -1031,8 +1019,6 @@
                     cnhCategoria: formData.get('cnhCategoria'),
                     possuiVeiculo: formData.get('possuiVeiculo'),
                     disponibilidade: formData.get('disponibilidade'),
-                    restricaoHorario: formData.get('restricaoHorario'),
-                    qualRestricao: formData.get('qualRestricao'),
                     escolaridade: formData.get('escolaridade'),
                     empregado: formData.get('empregado'),
                     ultimaEmpresa: formData.get('ultimaEmpresa'),
@@ -1303,9 +1289,7 @@
                     
                     <h3 class="text-xl font-bold border-b pb-2">Disponibilidade</h3>
                     <div><strong class="font-semibold text-slate-800">Disponibilidade de Horário:</strong> ${data.disponibilidade || 'Não informado'}</div>
-                    <div><strong class="font-semibold text-slate-800">Restrição de Horário:</strong> ${data.restricaoHorario || 'Não informado'}</div>
-                    <div><strong class="font-semibold text-slate-800">Qual Restrição:</strong> ${data.qualRestricao || 'Não informado'}</div>
-
+                    
                     <h3 class="text-xl font-bold border-b pb-2">Formação Acadêmica</h3>
                     <div><strong class="font-semibold text-slate-800">Escolaridade:</strong> ${escolaridadeMap[data.escolaridade] || 'Não informado'}</div>
 
